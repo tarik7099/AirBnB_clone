@@ -3,6 +3,12 @@
 from models.base_model import BaseModel
 from models import storage
 from models.user import User
+from models.user import User
+from models.state import State
+from models.city import City
+from models.place import Place
+from models.amenity import Amenity
+from models.review import Review
 
 import cmd
 import json
@@ -14,7 +20,12 @@ class HBNBCommand(cmd.Cmd):
     # Define MY_CLASSES attribute
     MY_CLASSES = {
         'BaseModel': BaseModel,
-        'User'  : User
+        'User'  : User,
+        'State' : State,
+        'City' : City,
+        'Place' : Place,
+        'Amentiy' : Amenity,
+        'Review' : Review
         # Add other classes here as needed
     }
 
