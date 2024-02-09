@@ -1,10 +1,10 @@
 #!/usr/bin/python3
-"""Unittest module for User Class"""
+"""Unittest module for State Class"""
 
 import unittest
 from datetime import datetime
 import time
-from models.user import User
+from models.state import State
 import re
 import json
 from models.engine.file_storage import FileStorage
@@ -13,9 +13,9 @@ from models import storage
 from models.base_model import BaseModel
 
 
-class TestUser(unittest.TestCase):
+class TestState(unittest.TestCase):
 
-    """Tests Cases for the User class"""
+    """Tests Cases for State class"""
 
     def setUp(self):
         """Sets up the test methods"""
@@ -27,23 +27,23 @@ class TestUser(unittest.TestCase):
         pass
 
     def resetStorage(self):
-        """Resets FileStorage data"""
+        """Resets the FileStorage data"""
         FileStorage._FileStorage__objects = {}
         if os.path.isfile(FileStorage._FileStorage__file_path):
             os.remove(FileStorage._FileStorage__file_path)
 
     def test8_instantiation(self):
-        """Test instantiation of the User class"""
+        """Test the instantiation of the State class"""
 
-        bs = User()
-        self.assertEqual(str(type(bs)), "<class 'models.user.User'>")
-        self.assertIsInstance(bs, User)
+        bs = State()
+        self.assertEqual(str(type(bs)), "<class 'models.state.State'>")
+        self.assertIsInstance(bs, State)
         self.assertTrue(issubclass(type(bs), BaseModel))
 
     def test8_attributes(self):
-        """Tests the attributes of the User class"""
-        attributes = storage.attributes()["User"]
-        bs = User()
+        """Test the attributes of the State class"""
+        attributes = storage.attributes()["State"]
+        bs = State()
         for ky, v in attributes.items():
             self.assertTrue(hasattr(bs, ky))
             self.assertEqual(type(getattr(bs, ky, None)), v)
