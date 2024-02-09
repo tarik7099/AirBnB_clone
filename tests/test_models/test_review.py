@@ -1,10 +1,10 @@
 #!/usr/bin/python3
-"""Unittest module for State Class"""
+"""Unittest module for Review Class"""
 
 import unittest
 from datetime import datetime
 import time
-from models.state import State
+from models.review import Review
 import re
 import json
 from models.engine.file_storage import FileStorage
@@ -13,16 +13,16 @@ from models import storage
 from models.base_model import BaseModel
 
 
-class TestState(unittest.TestCase):
+class TestReview(unittest.TestCase):
 
-    """Tests Cases for State class"""
+    """Tests Cases for Review Class"""
 
     def setUp(self):
         """Sets up the test methods"""
         pass
 
     def tearDown(self):
-        """Tear down the test methods"""
+        """Tears down the test methods"""
         self.resetStorage()
         pass
 
@@ -33,17 +33,17 @@ class TestState(unittest.TestCase):
             os.remove(FileStorage._FileStorage__file_path)
 
     def test8_instantiation(self):
-        """Test the instantiation of the State class"""
+        """Tests instantiation of the Review Class"""
 
-        bs = State()
-        self.assertEqual(str(type(bs)), "<class 'models.state.State'>")
-        self.assertIsInstance(bs, State)
+        bs = Review()
+        self.assertEqual(str(type(bs)), "<class 'models.review.Review'>")
+        self.assertIsInstance(bs, Review)
         self.assertTrue(issubclass(type(bs), BaseModel))
 
     def test8_attributes(self):
-        """Test the attributes of the State class"""
-        attributes = storage.attributes()["State"]
-        bs = State()
+        """Tests attributes of the Review Class"""
+        attributes = storage.attributes()["Review"]
+        bs = Review()
         for ky, v in attributes.items():
             self.assertTrue(hasattr(bs, ky))
             self.assertEqual(type(getattr(bs, ky, None)), v)
