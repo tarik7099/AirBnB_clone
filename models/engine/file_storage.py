@@ -9,6 +9,7 @@ import json
 import datetime
 from models.base_model import BaseModel
 from models.user import User
+from models.engine import file_storage
 
 class FileStorage:
     __file_path = "file.json"
@@ -88,7 +89,7 @@ class FileStorage:
         }
         return attributes
 
-from models.engine import file_storage
 
-storage = file_storage.FileStorage()
-storage.reload()
+if __name__ == '__main__':
+    storage = file_storage.FileStorage()
+    storage.reload()
