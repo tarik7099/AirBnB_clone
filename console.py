@@ -14,7 +14,12 @@ import cmd
 import json
 
 import cmd
-MY_CLASSES = {
+
+class HBNBCommand(cmd.Cmd):
+    prompt = "(hbnb) "
+    
+    
+    MY_CLASSES = {
         'BaseModel': BaseModel,
         'User'  : User,
         'State' : State,
@@ -24,9 +29,6 @@ MY_CLASSES = {
         'Review' : Review
         # Add other classes here as needed
 }
-
-class HBNBCommand(cmd.Cmd):
-    prompt = "(hbnb) "
 
     # Define MY_CLASSES attribute
 
@@ -143,7 +145,7 @@ class HBNBCommand(cmd.Cmd):
         setattr(obj, attr_name, attr_value)
         storage.save()
 
-        
+
     def do_help(self, arg):
         """To get help on a command, type help <topic>.
         """
