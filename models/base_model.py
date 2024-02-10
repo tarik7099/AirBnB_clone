@@ -35,6 +35,7 @@ class BaseModel():
         self.updated_at = datetime.now()
 
         models.storage.new(self)
+        models.storage.save()
 
 
     def __str__(self):
