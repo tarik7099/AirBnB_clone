@@ -10,15 +10,12 @@ import datetime
 from models.base_model import BaseModel
 from models.user import User
 
+from models.base_model import BaseModel
+
+
 class FileStorage:
     __file_path = "file.json"
     __objects = {}
-
-    CLASSES = {
-        'BaseModel' : BaseModel, 
-        'User' : User
-    } 
-
 
     def all(self):
         """Returns the dictionary __objects"""
@@ -49,7 +46,7 @@ class FileStorage:
                     self.__objects[key] = class_(**value)
         except FileNotFoundError:
             pass
-    
+
     def attributes(self):
         """Returns the valid attributes and their types for classname."""
         attributes = {
