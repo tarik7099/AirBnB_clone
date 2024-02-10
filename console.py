@@ -15,6 +15,16 @@ import json
 
 import cmd
 
+MY_CLASSES = {
+        'BaseModel': BaseModel,
+        'User'  : User,
+        'State' : State,
+        'City' : City,
+        'Place' : Place,
+        'Amentiy' : Amenity,
+        'Review' : Review
+        # Add other classes here as needed
+}
 class HBNBCommand(cmd.Cmd):
 
     prompt = "(hbnb) "
@@ -35,16 +45,6 @@ class HBNBCommand(cmd.Cmd):
         """Help command"""
         super().do_help(arg)
     
-    MY_CLASSES = {
-        'BaseModel': BaseModel,
-        'User'  : User,
-        'State' : State,
-        'City' : City,
-        'Place' : Place,
-        'Amentiy' : Amenity,
-        'Review' : Review
-        # Add other classes here as needed
-}
 
     # Define MY_CLASSES attribute
 
