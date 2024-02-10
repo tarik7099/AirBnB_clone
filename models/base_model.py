@@ -42,14 +42,28 @@ class FileStorage():
                 {k: v.to_dict() for k, v in FileStorage.__objects.items()}, f)
 
     def reload(self):
-        """Deserializes the JSON file to __objects"""
-        try:
-            with open(self.__file_path, "r") as file:
-                serialized_objs = json.load(file)
-                for key, value in serialized_objs.items():
-                    class_name, obj_id = key.split('.')
-                    module_name = class_name.lower()  # Assuming module names are lowercase
-                    class_ = globals()[class_name]  # Assuming classes are defined globally
-                    self.__objects[key] = class_(**value)
-        except FileNotFoundError:
-            pass
+        """
+        deserializes the JSON file to __objects only if the JSON
+        file exists; otherwise, does nothing
+        """
+        current_classes = {'BaseModel': BaseModel, 'User': User,
+                           'Amenity': Amenity, 'City': City, 'State': State,
+                           'Place': Place, 'Review': Review}
+
+        if not os.path.exists(FileStorage.__file_path):
+            return
+
+        with open(FileStorage.__file_path, 'r') as f:
+            deserialized = None
+
+            try:
+                deserialized = json.load(f)
+            except json.JSONDecodeError:
+                pass
+
+            if deserialized is None:
+                return
+
+            FileStorage.__objects = {
+                k: current_classes[k.split('.')[0]](**v)
+                for k, v in deserialized.items()}
