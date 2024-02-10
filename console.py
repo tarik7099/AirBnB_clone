@@ -1,34 +1,14 @@
 #!/usr/bin/python3
 
-from models.base_model import BaseModel
-from models import storage
-from models.user import User
-from models.user import User
-from models.state import State
-from models.city import City
-from models.place import Place
-from models.amenity import Amenity
-from models.review import Review
-
 import cmd
 import json
+import datetime
+from models.base_model import BaseModel
+from models import storage
 
-import cmd
-
-MY_CLASSES = {
-        'BaseModel': BaseModel,
-        'User'  : User,
-        'State' : State,
-        'City' : City,
-        'Place' : Place,
-        'Amentiy' : Amenity,
-        'Review' : Review
-        # Add other classes here as needed
-}
 class HBNBCommand(cmd.Cmd):
-
     prompt = "(hbnb) "
-    
+
     def do_quit(self, arg):
         """Quit command to exit the program"""
         return True
@@ -44,35 +24,29 @@ class HBNBCommand(cmd.Cmd):
     def do_help(self, arg):
         """Help command"""
         super().do_help(arg)
-    
-
-    # Define MY_CLASSES attribute
 
     def do_create(self, arg):
         """Creates a new instance of BaseModel, saves it to the JSON file, and prints the id."""
         if not arg:
             print("** class name missing **")
             return
-        
-        class_name = arg.split()[0]
-        if class_name not in self.MY_CLASSES:  # Access MY_CLASSES through self
-            print("** class doesn't exist **")
-            return
 
-        new_instance = self.MY_CLASSES[class_name]()  # Access MY_CLASSES through self
-        new_instance.save()
-        print(new_instance.id)
-        storage.save()
+        try:
+            new_instance = eval(arg)()
+            new_instance.save()
+            print(new_instance.id)
+        except NameError:
+            print("** class doesn't exist **")
 
     def do_show(self, arg):
         """Prints the string representation of an instance based on the class name and id."""
+        args = arg.split()
         if not arg:
             print("** class name missing **")
             return
 
-        args = arg.split()
         class_name = args[0]
-        if class_name not in self.MY_CLASSES:  # Access MY_CLASSES through self
+        if class_name not in storage.classes():
             print("** class doesn't exist **")
             return
 
@@ -96,7 +70,7 @@ class HBNBCommand(cmd.Cmd):
             return
 
         class_name = args[0]
-        if class_name not in self.MY_CLASSES:  # Access MY_CLASSES through self
+        if class_name not in storage.classes():
             print("** class doesn't exist **")
             return
 
@@ -120,7 +94,7 @@ class HBNBCommand(cmd.Cmd):
             print([str(obj) for obj in objects_dict.values()])
         else:
             class_name = arg.split()[0]
-            if class_name not in self.MY_CLASSES:  # Access MY_CLASSES through self
+            if class_name not in storage.classes():
                 print("** class doesn't exist **")
                 return
             print([str(obj) for key, obj in objects_dict.items() if key.split('.')[0] == class_name])
@@ -133,7 +107,7 @@ class HBNBCommand(cmd.Cmd):
             return
 
         class_name = args[0]
-        if class_name not in self.MY_CLASSES:  # Access MY_CLASSES through self
+        if class_name not in storage.classes():
             print("** class doesn't exist **")
             return
 
