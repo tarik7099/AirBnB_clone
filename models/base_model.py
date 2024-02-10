@@ -5,17 +5,10 @@ Module: base.py
 import models
 import uuid
 from datetime import datetime
-import models
-from uuid import uuid4
-from datetime import datetime
-
 
 
 class BaseModel():
-    """
-    Base class which defines all common
-    attributes/methods for other classes
-    """
+
     def __init__(self, *args, **kwargs):
         """
         instatiates an object with it's
@@ -35,29 +28,19 @@ class BaseModel():
         self.updated_at = datetime.now()
 
         models.storage.new(self)
-        models.storage.save()
-
 
     def __str__(self):
-        """
-        Returns the string representation
-        of the instance
-        """
         return "[{}] ({}) {}".format(
             type(self).__name__, self.id, self.__dict__)
 
     def save(self):
-        """
-        updates the public instance attribute
-        updated_at with the current datetime
-        """
-        self.updated_at = datetime.today()
+        self.updated_at = datetime.now()
         models.storage.save()
-    
+
     def to_dict(self):
-        """Return dictionary representation of BaseModel"""
-        obj_dict = self.__dict__.copy()
-        obj_dict['__class__'] = self.__class__.__name__
-        obj_dict['created_at'] = obj_dict['created_at'].isoformat()
-        obj_dict['updated_at'] = obj_dict['updated_at'].isoformat()
-        return obj_dict
+        dict = {**self.__dict__}
+        dict['__class__'] = type(self).__name__
+        dict['created_at'] = dict['created_at'].isoformat()
+        dict['updated_at'] = dict['updated_at'].isoformat()
+
+        return dict
