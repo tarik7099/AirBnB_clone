@@ -38,15 +38,15 @@ class FileStorage:
             json.dump(serialized_objs, file)
 
     def reload(self):
-        """Deserializes the JSON file to __objects."""
+        """Deserializes the JSON file to __objects"""
         try:
             with open(self.__file_path, "r") as file:
                 serialized_objs = json.load(file)
                 for key, value in serialized_objs.items():
                     class_name, obj_id = key.split('.')
-                    class_ = self.CLASSES.get(class_name)
-                    if class_:
-                        self.__objects[key] = class_(**value)
+                    module_name = class_name.lower()  # Assuming module names are lowercase
+                    class_ = globals()[class_name]  # Assuming classes are defined globally
+                    self.__objects[key] = class_(**value)
         except FileNotFoundError:
             pass
 
