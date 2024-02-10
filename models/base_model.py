@@ -62,7 +62,3 @@ class BaseModel:
 
 # Update models/__init__.py to create a unique FileStorage instance for your application
 # Update models/base_model.py to link your BaseModel to FileStorage by using the variable storage
-from models.engine.file_storage import FileStorage
-
-storage = FileStorage()
-storage.reload()
