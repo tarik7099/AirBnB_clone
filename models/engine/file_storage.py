@@ -1,15 +1,24 @@
 #!/usr/bin/python3
 """
 Module: file_storage.py
-"""
-import json
-import os
-from models.base_model import BaseModel
 
+Defines a `FileStorage` class.
+"""
+import os
+import json
+import datetime
+from models.base_model import BaseModel
+from models.user import User
 
 class FileStorage:
     __file_path = "file.json"
     __objects = {}
+
+    CLASSES = {
+        'BaseModel' : BaseModel, 
+        'User' : User
+    } 
+
 
     def all(self):
         """Returns the dictionary __objects"""
@@ -40,7 +49,7 @@ class FileStorage:
                     self.__objects[key] = class_(**value)
         except FileNotFoundError:
             pass
-
+    
     def attributes(self):
         """Returns the valid attributes and their types for classname."""
         attributes = {
