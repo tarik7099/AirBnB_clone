@@ -14,11 +14,7 @@ import cmd
 import json
 
 import cmd
-class HBNBCommand(cmd.Cmd):
-    prompt = "(hbnb) "
-
-    # Define MY_CLASSES attribute
-    MY_CLASSES = {
+MY_CLASSES = {
         'BaseModel': BaseModel,
         'User'  : User,
         'State' : State,
@@ -27,7 +23,12 @@ class HBNBCommand(cmd.Cmd):
         'Amentiy' : Amenity,
         'Review' : Review
         # Add other classes here as needed
-    }
+}
+
+class HBNBCommand(cmd.Cmd):
+    prompt = "(hbnb) "
+
+    # Define MY_CLASSES attribute
 
     def do_create(self, arg):
         """Creates a new instance of BaseModel, saves it to the JSON file, and prints the id."""
@@ -142,13 +143,19 @@ class HBNBCommand(cmd.Cmd):
         setattr(obj, attr_name, attr_value)
         storage.save()
 
+        
+    def do_help(self, arg):
+        """To get help on a command, type help <topic>.
+        """
+        return super().do_help(arg)
+
     def do_quit(self, arg):
         """Quit command to exit the program."""
         return True
 
     def do_EOF(self, arg):
         """Quit command to exit the program."""
-        print()
+        print("")
         return True
 
     def emptyline(self):
