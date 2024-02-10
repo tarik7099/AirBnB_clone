@@ -1,62 +1,57 @@
 #!/usr/bin/python3
-"""Module for the FileStorage class"""
-import datetime
-import json
-import os
+"""
+Module: file_storage.py
 
+Defines a `FileStorage` class.
+"""
+import os
+import json
+import datetime
+from models.base_model import BaseModel
+from models.user import User
 
 class FileStorage:
-
-    """A Class for serializtion and deserialization of the base classes"""
     __file_path = "file.json"
     __objects = {}
 
+    CLASSES = {
+        'BaseModel' : BaseModel, 
+        'User' : User
+    } 
+
+
     def all(self):
-        """Return -> __objects dictionary"""
-        return FileStorage.__objects
+        """Returns the dictionary __objects"""
+        return self.__objects
 
     def new(self, obj):
-        """Set new objct in __objects dict"""
-        key = "{}.{}".format(type(obj).__name__, obj.id)
-        FileStorage.__objects[key] = obj
+        """Sets in __objects the obj with key <obj class name>.id"""
+        key = "{}.{}".format(obj.__class__.__name__, obj.id)
+        self.__objects[key] = obj
 
     def save(self):
-        """Serialzes the __objects to JSON file"""
-        with open(FileStorage.__file_path, "w", encoding="utf-8") as fl:
-            dr = {k: v.to_dict() for k, v in FileStorage.__objects.items()}
-            json.dump(dr, fl)
-
-    def classes(self):
-        """Return -> dict of valid classes and references"""
-        from models.base_model import BaseModel
-        from models.user import User
-        from models.state import State
-        from models.city import City
-        from models.amenity import Amenity
-        from models.place import Place
-        from models.review import Review
-
-        classes = {"BaseModel": BaseModel,
-                   "User": User,
-                   "State": State,
-                   "City": City,
-                   "Amenity": Amenity,
-                   "Place": Place,
-                   "Review": Review}
-        return classes
+        """Serializes __objects to the JSON file"""
+        serialized_objs = {}
+        for key, obj in self.__objects.items():
+            serialized_objs[key] = obj.to_dict()
+        with open(self.__file_path, "w") as file:
+            json.dump(serialized_objs, file)
 
     def reload(self):
-        """Deserializes the JSON file into __objects"""
-        if not os.path.isfile(FileStorage.__file_path):
-            return
-        with open(FileStorage.__file_path, "r", encoding="utf-8") as fl:
-            objct_dct = json.load(f)
-            objct_dct = {k: self.classes()[v["__class__"]](**v)
-                        for k, v in objct_dct.items()}
-            FileStorage.__objects = objct_dct
-
+        """Deserializes the JSON file to __objects"""
+        try:
+            with open(self.__file_path, "r") as file:
+                serialized_objs = json.load(file)
+                for key, value in serialized_objs.items():
+                    class_name, obj_id = key.split('.')
+                    module_name = class_name.lower()  # Assuming module names are lowercase
+                    class_ = globals()[class_name]  # Assuming classes are defined globally
+                    self.__objects[key] = class_(**value)
+        except FileNotFoundError:
+            pass
+    
     def attributes(self):
-        """Return -> valid attributes and  types for class name"""
+        """Returns the valid attributes and their types for classname."""
         attributes = {
             "BaseModel":
                      {"id": str,
