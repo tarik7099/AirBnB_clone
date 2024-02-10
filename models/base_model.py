@@ -60,4 +60,3 @@ class BaseModel():
         dict['updated_at'] = dict['updated_at'].isoformat()
 
         return dict
-
