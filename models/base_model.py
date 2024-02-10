@@ -12,22 +12,17 @@ class BaseModel():
     Base class which defines all common
     attributes/methods for other classes
     """
-class BaseModel():
-    """
-    Base class which defines all common
-    attributes/methods for other classes
-    """
 
     def __init__(self, *args, **kwargs):
         """
-        Instantiates an object with its
+        instatiates an object with it's
         attributes
         """
-        if kwargs:
+        if len(kwargs) > 0:
             for key, value in kwargs.items():
-                if key == 'created_at' and 'created_at' in kwargs:
-                    value = datetime.fromisoformat(value)
-                if key == 'updated_at' and 'updated_at' in kwargs:
+                if key == '__class__':
+                    continue
+                if key == "created_at" or key == "updated_at":
                     value = datetime.fromisoformat(value)
                 setattr(self, key, value)
             return
@@ -44,11 +39,11 @@ class BaseModel():
         of the instance
         """
         return "[{}] ({}) {}".format(
-            self.__class__.__name__, self.id, self.__dict__)
+            type(self).__name__, self.id, self.__dict__)
 
     def save(self):
         """
-        Updates the public instance attribute
+        updates the public instance attribute
         updated_at with the current datetime
         """
         self.updated_at = datetime.now()
@@ -56,15 +51,12 @@ class BaseModel():
 
     def to_dict(self):
         """
-        Returns a dictionary containing all keys/values
+        returns a dictionary containing all keys/values
         of __dict__ of the instance
         """
-        my_dict = {**self.__dict__}
-        if '__class__' not in my_dict:
-            my_dict['__class__'] = self.__class__.__name__
-        if 'created_at' in my_dict:
-            my_dict['created_at'] = my_dict['created_at'].isoformat()
-        if 'updated_at' in my_dict:
-            my_dict['updated_at'] = my_dict['updated_at'].isoformat()
+        dict = {**self.__dict__}
+        dict['__class__'] = type(self).__name__
+        dict['created_at'] = dict['created_at'].isoformat()
+        dict['updated_at'] = dict['updated_at'].isoformat()
 
-        return my_dict
+        return dict
