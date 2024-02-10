@@ -1,69 +1,63 @@
 #!/usr/bin/python3
 """
-Module: file_storage.py
-
-Defines a `FileStorage` class.
+Module: base.py
 """
-import os
-import json
-from models.base_model import BaseModel
-from models.user import User
-from models.state import State
-from models.city import City
-from models.review import Review
-from models.amenity import Amenity
-from models.place import Place
+import models
+import uuid
+from datetime import datetime
+import models
+from uuid import uuid4
+from datetime import datetime
 
 
-class FileStorage():
 
-    __file_path = "file.json"
-    __objects = {}
-
-    def all(self):
+class BaseModel():
+    """
+    Base class which defines all common
+    attributes/methods for other classes
+    """
+    def __init__(self, *args, **kwargs):
         """
-        returns the dictionary __objects
+        instatiates an object with it's
+        attributes
         """
-        return FileStorage.__objects
+        if len(kwargs) > 0:
+            for key, value in kwargs.items():
+                if key == '__class__':
+                    continue
+                if key == "created_at" or key == "updated_at":
+                    value = datetime.fromisoformat(value)
+                setattr(self, key, value)
+            return
 
-    def new(self, obj):
+        self.id = str(uuid.uuid4())
+        self.created_at = datetime.now()
+        self.updated_at = datetime.now()
+
+        models.storage.new(self)
+        models.storage.save()
+
+
+    def __str__(self):
         """
-        sets in __objects the obj with key <obj class name>.id
+        Returns the string representation
+        of the instance
         """
-        key = "{}.{}".format(type(obj).__name__, obj.id)
-        FileStorage.__objects[key] = obj
+        return "[{}] ({}) {}".format(
+            type(self).__name__, self.id, self.__dict__)
 
     def save(self):
         """
-        serializes __objects to the JSON file (path: __file_path)
+        updates the public instance attribute
+        updated_at with the current datetime
         """
-        with open(FileStorage.__file_path, 'w') as f:
-            json.dump(
-                {k: v.to_dict() for k, v in FileStorage.__objects.items()}, f)
-
-    def reload(self):
-        """
-        deserializes the JSON file to __objects only if the JSON
-        file exists; otherwise, does nothing
-        """
-        current_classes = {'BaseModel': BaseModel, 'User': User,
-                           'Amenity': Amenity, 'City': City, 'State': State,
-                           'Place': Place, 'Review': Review}
-
-        if not os.path.exists(FileStorage.__file_path):
-            return
-
-        with open(FileStorage.__file_path, 'r') as f:
-            deserialized = None
-
-            try:
-                deserialized = json.load(f)
-            except json.JSONDecodeError:
-                pass
-
-            if deserialized is None:
-                return
-
-            FileStorage.__objects = {
-                k: current_classes[k.split('.')[0]](**v)
-                for k, v in deserialized.items()}
+        self.updated_at = datetime.today()
+        models.storage.save()
+    
+    def to_dict(self):
+        """Return dictionary representation of BaseModel"""
+        obj_dict = self.__dict__.copy()
+        obj_dict['__class__'] = self.__class__.__name__
+        obj_dict['created_at'] = obj_dict['created_at'].isoformat()
+        obj_dict['updated_at'] = obj_dict['updated_at'].isoformat()
+        return obj_dict
