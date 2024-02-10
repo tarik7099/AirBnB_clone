@@ -89,7 +89,3 @@ class FileStorage:
         }
         return attributes
 
-
-if __name__ == '__main__':
-    storage = file_storage.FileStorage()
-    storage.reload()
