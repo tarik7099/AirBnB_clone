@@ -17,6 +17,7 @@ class FileStorage:
     __file_path = "file.json"
     __objects = {}
 
+    
     CLASSES = {
         'BaseModel': BaseModel,
         'User': User,
@@ -26,6 +27,8 @@ class FileStorage:
         'Amenity': Amenity,
         'Review': Review
     }
+ 
+
 
     def all(self):
         """Returns the dictionary __objects"""
@@ -51,8 +54,8 @@ class FileStorage:
                 serialized_objs = json.load(file)
                 for key, value in serialized_objs.items():
                     class_name, obj_id = key.split('.')
-                    if class_name in self.CLASSES:
-                        class_ = self.CLASSES[class_name]
-                        self.__objects[key] = class_(**value)
+                    module_name = class_name.lower()  # Assuming module names are lowercase
+                    class_ = globals()[class_name]  # Assuming classes are defined globally
+                    self.__objects[key] = class_(**value)
         except FileNotFoundError:
             pass
