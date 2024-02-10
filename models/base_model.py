@@ -12,6 +12,11 @@ class BaseModel():
     Base class which defines all common
     attributes/methods for other classes
     """
+class BaseModel():
+    """
+    Base class which defines all common
+    attributes/methods for other classes
+    """
 
     def __init__(self, *args, **kwargs):
         """
@@ -39,11 +44,11 @@ class BaseModel():
         of the instance
         """
         return "[{}] ({}) {}".format(
-            type(self).__name__, self.id, self.__dict__)
+            self.__class__.__name__, self.id, self.__dict__)
 
     def save(self):
         """
-        updates the public instance attribute
+        Updates the public instance attribute
         updated_at with the current datetime
         """
         self.updated_at = datetime.now()
@@ -51,12 +56,15 @@ class BaseModel():
 
     def to_dict(self):
         """
-        returns a dictionary containing all keys/values
+        Returns a dictionary containing all keys/values
         of __dict__ of the instance
         """
-        dict = {**self.__dict__}
-        dict['__class__'] = type(self).__name__
-        dict['created_at'] = dict['created_at'].isoformat()
-        dict['updated_at'] = dict['updated_at'].isoformat()
+        my_dict = {**self.__dict__}
+        if '__class__' not in my_dict:
+            my_dict['__class__'] = self.__class__.__name__
+        if 'created_at' in my_dict:
+            my_dict['created_at'] = my_dict['created_at'].isoformat()
+        if 'updated_at' in my_dict:
+            my_dict['updated_at'] = my_dict['updated_at'].isoformat()
 
-        return dict
+        return my_dict
