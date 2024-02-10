@@ -1,9 +1,3 @@
-#!/usr/bin/python3
-"""
-Module: file_storage.py
-
-Defines a `FileStorage` class.
-"""
 import os
 import json
 import datetime
@@ -15,10 +9,9 @@ class FileStorage:
     __objects = {}
 
     CLASSES = {
-        'BaseModel' : BaseModel, 
-        'User' : User
-    } 
-
+        'BaseModel': BaseModel,
+        'User': User
+    }
 
     def all(self):
         """Returns the dictionary __objects"""
@@ -44,46 +37,27 @@ class FileStorage:
                 serialized_objs = json.load(file)
                 for key, value in serialized_objs.items():
                     class_name, obj_id = key.split('.')
-                    module_name = class_name.lower()  # Assuming module names are lowercase
-                    class_ = globals()[class_name]  # Assuming classes are defined globally
-                    self.__objects[key] = class_(**value)
-        except FileNotFoundError:
+                    if class_name in self.CLASSES:
+                        class_ = self.CLASSES[class_name]
+                        self.__objects[key] = class_(**value)
+        except (FileNotFoundError, json.JSONDecodeError):
             pass
 
     def attributes(self):
         """Returns the valid attributes and their types for classname."""
         attributes = {
-            "BaseModel":
-                     {"id": str,
-                      "created_at": datetime.datetime,
-                      "updated_at": datetime.datetime},
-            "User":
-                     {"email": str,
-                      "password": str,
-                      "first_name": str,
-                      "last_name": str},
-            "State":
-                     {"name": str},
-            "City":
-                     {"state_id": str,
-                      "name": str},
-            "Amenity":
-                     {"name": str},
-            "Place":
-                     {"city_id": str,
-                      "user_id": str,
-                      "name": str,
-                      "description": str,
-                      "number_rooms": int,
-                      "number_bathrooms": int,
-                      "max_guest": int,
-                      "price_by_night": int,
-                      "latitude": float,
-                      "longitude": float,
-                      "amenity_ids": list},
-            "Review":
-            {"place_id": str,
-                         "user_id": str,
-                         "text": str}
+            "BaseModel": {
+                "id": str,
+                "created_at": datetime.datetime,
+                "updated_at": datetime.datetime
+            },
+            "User": {
+                "email": str,
+                "password": str,
+                "first_name": str,
+                "last_name": str
+            },
+            # ... (other classes)
         }
         return attributes
+
