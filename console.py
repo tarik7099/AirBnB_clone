@@ -16,8 +16,24 @@ import json
 import cmd
 
 class HBNBCommand(cmd.Cmd):
+
     prompt = "(hbnb) "
     
+    def do_quit(self, arg):
+        """Quit command to exit the program"""
+        return True
+
+    def do_EOF(self, arg):
+        """Quit command to exit the program"""
+        print("")
+        return True
+
+    def emptyline(self):
+        pass
+
+    def do_help(self, arg):
+        """Help command"""
+        super().do_help(arg)
     
     MY_CLASSES = {
         'BaseModel': BaseModel,
@@ -145,23 +161,6 @@ class HBNBCommand(cmd.Cmd):
         setattr(obj, attr_name, attr_value)
         storage.save()
 
-
-    def do_help(self, arg):
-        """To get help on a command, type help <topic>.
-        """
-        return super().do_help(arg)
-
-    def do_quit(self, arg):
-        """Quit command to exit the program."""
-        return True
-
-    def do_EOF(self, arg):
-        """Quit command to exit the program."""
-        print("")
-        return True
-
-    def emptyline(self):
-        pass
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
