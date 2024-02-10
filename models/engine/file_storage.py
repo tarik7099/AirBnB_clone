@@ -9,7 +9,6 @@ import json
 import datetime
 from models.base_model import BaseModel
 from models.user import User
-from models.engine import file_storage
 
 class FileStorage:
     __file_path = "file.json"
