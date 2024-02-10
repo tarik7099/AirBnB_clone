@@ -2,7 +2,7 @@
 """
 Module: base.py
 """
-from models import storage
+import storage
 import uuid
 from datetime import datetime
 
