@@ -108,9 +108,7 @@ class HBNBCommand(cmd.Cmd):
                 return
             print([
                 str(obj)
-                for key, obj in objects_dict.items()
-                if key.split('.')[0] == class_name
-            ])
+                for key, obj in objects_dict.items() if key.split('.')[0] == class_name])
 
     def do_update(self, arg):
         """Updates an instance based on the class name
