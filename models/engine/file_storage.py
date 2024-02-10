@@ -37,16 +37,17 @@ class FileStorage:
         with open(self.__file_path, "w") as file:
             json.dump(serialized_objs, file)
 
-def reload(self):
-        """To Deserializes the JSON file into __objects"""
+    def reload(self):
+        """Deserializes JSON file into __objects."""
         if not os.path.isfile(FileStorage.__file_path):
             return
         with open(FileStorage.__file_path, "r", encoding="utf-8") as fl:
-            objct_dct = json.load(fl)
-            objct_dct = {k: self.classes()[v["__class__"]](**v)
-                        for k, v in objct_dct.items()}
-            FileStorage.__objects = objct_dct
-    
+            obj_dict = json.load(fl)
+            obj_dict = {k: self.classes()[v["__class__"]](**v)
+                        for k, v in obj_dict.items()}
+            # TODO: should overwrite or insert?
+            FileStorage.__objects = obj_dict
+
     def attributes(self):
         """Returns the valid attributes and their types for classname."""
         attributes = {
