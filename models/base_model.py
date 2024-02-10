@@ -14,19 +14,22 @@ class BaseModel():
     """
 
     def __init__(self, *args, **kwargs):
-        """Initialize BaseModel instance"""
+        """ Constructor """
         if kwargs:
+           
             for key, value in kwargs.items():
+                if key == "created_at":
+                    value = datetime.strptime(value, '%Y-%m-%dT%H:%M:%S.%f')
+                if key == "updated_at":
+                    value = datetime.strptime(value, '%Y-%m-%dT%H:%M:%S.%f')
                 if key != "__class__":
                     setattr(self, key, value)
-            self.created_at = datetime.datetime.strptime(self.created_at, "%Y-%m-%dT%H:%M:%S.%f")
-            self.updated_at = datetime.datetime.strptime(self.updated_at, "%Y-%m-%dT%H:%M:%S.%f")
         else:
-            self.id = str(uuid.uuid4())
-            self.created_at = datetime.datetime.now()
-            self.updated_at = datetime.datetime.now()
+            self.id = str(uuid.uuid4())  # unique id
+            self.created_at = datetime.now()  # datetime when is created
+            self.updated_at = datetime.now()  # date when is updated
             models.storage.new(self)
-            models.storage.save()
+
     def __str__(self):
         """
         Returns the string representation
