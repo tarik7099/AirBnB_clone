@@ -38,15 +38,17 @@ class FileStorage:
             json.dump(serialized_objs, file)
 
     def reload(self):
-        """Deserializes JSON file into __objects."""
-        if not os.path.isfile(FileStorage.__file_path):
-            return
-        with open(FileStorage.__file_path, "r", encoding="utf-8") as fl:
-            obj_dict = json.load(fl)
-            obj_dict = {k: self.classes()[v["__class__"]](**v)
-                        for k, v in obj_dict.items()}
-            # TODO: should overwrite or insert?
-            FileStorage.__objects = obj_dict
+        """Deserializes the JSON file to __objects"""
+        try:
+            with open(self.__file_path, "r") as file:
+                serialized_objs = json.load(file)
+                for key, value in serialized_objs.items():
+                    class_name, obj_id = key.split('.')
+                    module_name = class_name.lower()  # Assuming module names are lowercase
+                    class_ = globals()[class_name]  # Assuming classes are defined globally
+                    self.__objects[key] = class_(**value)
+        except FileNotFoundError:
+            pass
 
     def attributes(self):
         """Returns the valid attributes and their types for classname."""
