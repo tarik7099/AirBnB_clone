@@ -7,7 +7,7 @@ import uuid
 from datetime import datetime
 
 
-class BaseModel():
+class BaseModel:
     """
     Base class which defines all common
     attributes/methods for other classes
@@ -15,23 +15,22 @@ class BaseModel():
 
     def __init__(self, *args, **kwargs):
         """
-        instatiates an object with it's
+        instantiates an object with its
         attributes
         """
-        if len(kwargs) > 0:
+        if kwargs:
             for key, value in kwargs.items():
                 if key == '__class__':
                     continue
                 if key == "created_at" or key == "updated_at":
-                    value = datetime.fromisoformat(value)
+                    value = datetime.strptime(value, '%Y-%m-%dT%H:%M:%S.%f')
                 setattr(self, key, value)
-            return
+        else:
+            self.id = str(uuid.uuid4())
+            self.created_at = datetime.now()
+            self.updated_at = datetime.now()
 
-        self.id = str(uuid.uuid4())
-        self.created_at = datetime.now()
-        self.updated_at = datetime.now()
-
-        models.storage.new(self)
+            models.storage.new(self)
 
     def __str__(self):
         """
@@ -54,9 +53,8 @@ class BaseModel():
         returns a dictionary containing all keys/values
         of __dict__ of the instance
         """
-        dict = {**self.__dict__}
-        dict['__class__'] = type(self).__name__
-        dict['created_at'] = dict['created_at'].isoformat()
-        dict['updated_at'] = dict['updated_at'].isoformat()
-
-        return dict
+        dict_repr = self.__dict__.copy()
+        dict_repr['__class__'] = type(self).__name__
+        dict_repr['created_at'] = self.created_at.isoformat()
+        dict_repr['updated_at'] = self.updated_at.isoformat()
+        return dict_repr
