@@ -155,5 +155,13 @@ class HBNBCommand(cmd.Cmd):
         """Prints help information."""
         super().do_help(arg)
 
+    def do_save(self, arg):
+        """Saves all instances to a JSON file"""
+        storage.save()
+
+    def do_reload(self, arg):
+        """Reloads all instances from a JSON file"""
+        storage.reload()
+
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
