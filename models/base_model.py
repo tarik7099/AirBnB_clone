@@ -62,4 +62,3 @@ class BaseModel():
         return dict
 
 
-from models.engine.file_storage import FileStorage
