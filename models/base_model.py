@@ -60,3 +60,9 @@ class BaseModel():
         dict['updated_at'] = dict['updated_at'].isoformat()
 
         return dict
+
+
+from models.engine.file_storage import FileStorage
+
+storage = FileStorage()
+storage.reload()
