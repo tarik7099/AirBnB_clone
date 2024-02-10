@@ -59,3 +59,7 @@ class FileStorage:
                     self.__objects[key] = class_(**value)
         except FileNotFoundError:
             pass
+
+from models.engine import file_storage
+
+storage = file_storage.FileStorage()
