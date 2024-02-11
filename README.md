@@ -11,7 +11,7 @@ Welcome to the AirBnB clone project! This project aims to create a command inter
 - [Usage](#usage)
 - [Testing](#testing)
 - [Contributing](#contributing)
-- [License](#lic
+- [License](#li
 
 ## Overview
 In this project, we implement a command interpreter that allows the management of AirBnB objects. The core functionalities include creating new objects, retrieving objects, performing operations on objects, updating object attributes, and destroying objects. The project is structured to promote code modularity, serialization/deserialization, and unit testing.
