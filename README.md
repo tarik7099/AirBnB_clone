@@ -40,7 +40,7 @@ The project aims to impart essential skills and knowledge, including:
 - Ubuntu 20.04 LTS
 
 ## Usage
-1. Clone the repository: `git clone https://github.com/your-username/AirBnB-Clone.git`
+1. Clone the repository: `git clone https://github.com/tarik7099/AirBnB-Clone.git`
 2. Navigate to the project directory: `cd AirBnB-Clone`
 3. Run the command interpreter: `./console.py`
 
