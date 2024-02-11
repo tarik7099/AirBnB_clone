@@ -17,7 +17,6 @@ from models.amenity import Amenity
 from models.review import Review
 
 
-
 class TestFileStorage_methods(unittest.TestCase):
     """Unittests for testing methods of the FileStorage class."""
 
@@ -141,7 +140,6 @@ class TestFileStorage_methods(unittest.TestCase):
         self.assertIn("State." + state.id, objs)
         self.assertIn("Place." + place.id, objs)
         self.assertIn("City." + city.id, objs)
-
 
     def test_reload_with(self):
         with self.assertRaises(TypeError):
