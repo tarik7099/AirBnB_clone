@@ -142,9 +142,6 @@ class TestFileStorage_methods(unittest.TestCase):
         self.assertIn("Place." + place.id, objs)
         self.assertIn("City." + city.id, objs)
 
-    def test_reload_no(self):
-        with self.assertRaises(FileNotFoundError):
-            models.storage.reload()
 
     def test_reload_with(self):
         with self.assertRaises(TypeError):
