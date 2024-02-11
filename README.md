@@ -10,7 +10,7 @@ Welcome to the AirBnB clone project! This project aims to create a command inter
 - [Requirements](#requirements)
 - [Usage](#usage)
 - [Testing](#testing)
-- [Contributin
+- [Contributi
 
 
 ## Overview
