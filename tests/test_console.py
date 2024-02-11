@@ -138,5 +138,6 @@ class TestConsole(unittest.TestCase):
     self.assertTrue(console.onecmd("update"))
     '''
 
+
 if __name__ == '__main__':
     unittest.main()

@@ -3,7 +3,6 @@
 """ Class city that inherits Base """
 
 
-
 from models.base_model import BaseModel
 
 
