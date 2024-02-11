@@ -14,11 +14,11 @@ from models.place import Place
 from models.amenity import Amenity
 from models.review import Review
 
+
 class FileStorage:
     __file_path = "file.json"
     __objects = {}
 
-    
     CLASSES = {
         'BaseModel': BaseModel,
         'User': User,
@@ -28,8 +28,6 @@ class FileStorage:
         'Amenity': Amenity,
         'Review': Review
     }
- 
-
 
     def all(self):
         """Returns the dictionary __objects"""
@@ -55,8 +53,8 @@ class FileStorage:
                 serialized_objs = json.load(file)
                 for key, value in serialized_objs.items():
                     class_name, obj_id = key.split('.')
-                    module_name = class_name.lower()  # Assuming module names are lowercase
-                    class_ = globals()[class_name]  # Assuming classes are defined globally
+                    module_name = class_name.lower()
+                    class_ = globals()[class_name]
                     self.__objects[key] = class_(**value)
         except FileNotFoundError:
             pass
@@ -64,37 +62,44 @@ class FileStorage:
     def attributes(self):
         """Returns the valid attributes and their types for classname."""
         attributes = {
-            "BaseModel":
-                     {"id": str,
-                      "created_at": datetime.datetime,
-                      "updated_at": datetime.datetime},
-            "User":
-                     {"email": str,
-                      "password": str,
-                      "first_name": str,
-                      "last_name": str},
-            "State":
-                     {"name": str},
-            "City":
-                     {"state_id": str,
-                      "name": str},
-            "Amenity":
-                     {"name": str},
-            "Place":
-                     {"city_id": str,
-                      "user_id": str,
-                      "name": str,
-                      "description": str,
-                      "number_rooms": int,
-                      "number_bathrooms": int,
-                      "max_guest": int,
-                      "price_by_night": int,
-                      "latitude": float,
-                      "longitude": float,
-                      "amenity_ids": list},
-            "Review":
-            {"place_id": str,
-                         "user_id": str,
-                         "text": str}
+            "BaseModel": {
+                "id": str,
+                "created_at": datetime.datetime,
+                "updated_at": datetime.datetime
+            },
+            "User": {
+                "email": str,
+                "password": str,
+                "first_name": str,
+                "last_name": str
+            },
+            "State": {
+                "name": str
+            },
+            "City": {
+                "state_id": str,
+                "name": str
+            },
+            "Amenity": {
+                "name": str
+            },
+            "Place": {
+                "city_id": str,
+                "user_id": str,
+                "name": str,
+                "description": str,
+                "number_rooms": int,
+                "number_bathrooms": int,
+                "max_guest": int,
+                "price_by_night": int,
+                "latitude": float,
+                "longitude": float,
+                "amenity_ids": list
+            },
+            "Review": {
+                "place_id": str,
+                "user_id": str,
+                "text": str
+            }
         }
         return attributes
