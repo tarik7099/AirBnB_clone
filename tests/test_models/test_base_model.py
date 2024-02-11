@@ -34,9 +34,10 @@ class TestBaseModel(unittest.TestCase):
 
     def test3_instantiation(self):
         """Test the instantiation of the BaseModel class"""
-
         bs = BaseModel()
-        self.assertEqual(str(type(bs)), "<class 'models.base_model.BaseModel'>")
+        expected_type = "<class 'models.base_model.BaseModel'>"
+        self.assertEqual(str(type(bs)), expected_type)
+
         self.assertIsInstance(bs, BaseModel)
         self.assertTrue(issubclass(type(bs), BaseModel))
 
@@ -57,7 +58,6 @@ class TestBaseModel(unittest.TestCase):
 
     def test3_attributes(self):
         """Test the attributes value for instance of BaseModel class"""
-
         attributes = storage.attributes()["BaseModel"]
         bs = BaseModel()
         for ky, v in attributes.items():
@@ -75,13 +75,11 @@ class TestBaseModel(unittest.TestCase):
 
     def test3_id(self):
         """Tests for UUID."""
-
         ld = [BaseModel().id for i in range(1000)]
         self.assertEqual(len(set(ld)), len(ld))
 
     def test3_save(self):
         """Tests public instance method save()"""
-
         bs = BaseModel()
         time.sleep(0.5)
         dt_now = datetime.now()
@@ -107,7 +105,6 @@ class TestBaseModel(unittest.TestCase):
 
     def test3_to_dict(self):
         """Test public instance method to_dict()"""
-
         bs = BaseModel()
         bs.name = "Laura"
         bs.age = 23
@@ -137,7 +134,6 @@ class TestBaseModel(unittest.TestCase):
 
     def test4_instantiation(self):
         """Test the instantiation with **kwargs"""
-
         my_model = BaseModel()
         my_model.name = "Holberton"
         my_model.my_number = 89
@@ -147,27 +143,31 @@ class TestBaseModel(unittest.TestCase):
 
     def test4_instantiation_dict(self):
         """Test the instantiation with **kwargs frm custom dict"""
-        dct = {"__class__": "BaseModel",
-             "updated_at":
-             datetime(2050, 12, 30, 23, 59, 59, 123456).isoformat(),
-             "created_at": datetime.now().isoformat(),
-             "id": uuid.uuid4(),
-             "var": "foobar",
-             "int": 108,
-             "float": 3.14}
+        dct = {
+            "__class__": "BaseModel",
+            "updated_at": datetime(2050, 12, 30, 23, 59, 59).isoformat(),
+            "created_at": datetime.now().isoformat(),
+            "id": uuid.uuid4(),
+            "var": "foobar",
+            "int": 108,
+            "float": 3.14
+        }
         bs = BaseModel(**dct)
         self.assertEqual(bs.to_dict(), dct)
 
     def test5_save(self):
         """Test storage.save() is called frm save()"""
         self.resetStorage()
-        bs = BaseModel()
-        bs.save()
-        key = "{}.{}".format(type(bs).__name__, bs.id)
-        dct = {key: bs.to_dict()}
+        basemodel = BaseModel()
+        basemodel.save()
+        key = "{}.{}".format(type(basemodel).__name__, basemodel.id)
+        dct = {key: basemodel.to_dict()}
+
         self.assertTrue(os.path.isfile(FileStorage._FileStorage__file_path))
-        with open(FileStorage._FileStorage__file_path,
-                  "r", encoding="utf-8") as fl:
+        with open(
+            FileStorage._FileStorage__file_path, "r", encoding="utf-8"
+        ) as fl:
+
             self.assertEqual(len(fl.read()), len(json.dumps(dct)))
             fl.seek(0)
             self.assertEqual(json.load(fl), dct)
